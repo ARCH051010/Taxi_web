@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Conductores{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="sidebar">
+            <h5>{% if conductor_to_edit %}Editar Conductor{% else %}Nuevo Conductor{% endif %}</h5>
+            <form method="post" action="{% if conductor_to_edit %}{% url 'conductor_edit' conductor_to_edit.id %}{% else %}{% url 'conductor_create' %}{% endif %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        {% if conductor_to_edit %}Actualizar{% else %}Guardar{% endif %}
+                    </button>
+                    <a href="{% url 'conductores' %}" class="btn btn-outline-secondary">Limpiar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="dashboard-card card">
+            <div class="card-header text-warning fw-bold" style="background-color: #1E1E1E;">
+                Lista de Conductores
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>CI</th>
+                            <th>Contacto</th>
+                            <th>Marca Carro</th>
+                            <th>Disponible</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for conductor in conductores %}
+                        <tr>
+                            <td>{{ conductor.nombre }}</td>
+                            <td>{{ conductor.apellido }}</td>
+                            <td>{{ conductor.ci }}</td>
+                            <td>{{ conductor.contacto }}</td>
+                            <td>{{ conductor.marca_carro }}</td>
+                            <td>{{ conductor.disponible }}</td>
+                            <td>
+                                <a href="{% url 'conductor_edit' conductor.id %}" class="btn btn-sm btn-primary" title="Modificar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'conductor_delete' conductor.id %}" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este conductor?');">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-center text-muted">No hay conductores.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
