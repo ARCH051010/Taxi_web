@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Reservas{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="sidebar">
+            <h5>{% if reserva_to_edit %}Editar Reservación{% else %}Nueva Reservación{% endif %}</h5>
+            <form method="post" action="{% if reserva_to_edit %}{% url 'reserva_edit' reserva_to_edit.id %}{% else %}{% url 'reserva_create' %}{% endif %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        {% if reserva_to_edit %}Actualizar{% else %}Guardar{% endif %}
+                    </button>
+                    <a href="{% url 'reservas' %}" class="btn btn-outline-secondary">Limpiar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="dashboard-card card">
+            <div class="card-header text-warning fw-bold" style="background-color: #1E1E1E;">
+                Lista de Reservaciones
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Destino</th>
+                            <th>Cliente</th>
+                            <th>Conductor</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in reservas %}
+                        <tr>
+                            <td>{{ r.fecha }}</td>
+                            <td>{{ r.hora }}</td>
+                            <td>{{ r.destino }}</td>
+                            <td>{{ r.cliente }}</td>
+                            <td>{{ r.conductor }}</td>
+                            <td>
+                                <a href="{% url 'reserva_edit' r.id %}" class="btn btn-sm btn-primary" title="Modificar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'reserva_delete' r.id %}" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar esta reservación?');">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="6" class="text-center text-muted">No hay reservaciones.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
