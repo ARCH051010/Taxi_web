@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #1E1E1E;
+        color: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .login-container h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #ffca28;
+    }
+
+    .login-container label {
+        color: #ddd;
+        margin-bottom: 5px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        background-color: #333;
+        color: #fff;
+        border: 1px solid #666;
+        border-radius: 6px;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .login-container input:focus {
+        border-color: #ffca28;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(255, 202, 40, 0.3);
+    }
+
+    .login-container .btn-primary {
+        background-color: #ffca28;
+        color: #000;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .login-container .btn-primary:hover {
+        background-color: #ffd54f;
+    }
+</style>
+
+<div class="login-container">
+    <h3><i class="fas fa-sign-in-alt me-2"></i>Iniciar sesión</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-door-open me-2"></i>Entrar
+        </button>
+    </form>
+</div>
+{% endblock %}
